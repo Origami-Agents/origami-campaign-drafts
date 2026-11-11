@@ -1,33 +1,43 @@
-# Origami campaign drafts for Claude
+# Origami campaign management
 
-Turn an outreach brief into an email or LinkedIn campaign draft saved in [Origami](https://origami.chat). The plugin previews the saved copy and links to Origami for review. It does not launch outreach, enroll recipients, connect senders, buy leads, or edit existing campaigns.
+Manage outreach in [Origami](https://origami.chat) from ChatGPT or Claude. List campaigns, pause or resume them, edit follow-up delays, find leads, stop outreach to a lead, review or redraft replies, and start campaign builds or background tasks.
 
 ## Connect
 
-Install this plugin in a supported Claude surface, then use the secure OAuth connection for the Origami server at `https://origami.chat/mcp`. Sign in as an administrator of a primary Origami organization with API access and select that organization during consent. Never paste passwords, API keys, or tokens into chat. The connection stays within the consented organization; child/project switching is unavailable in this workflow.
+Connect to `https://origami.chat/mcp` through OAuth as an administrator of an active, paid, API-enabled primary Origami organization. Consent selects the organization; these tools cannot switch projects or access another organization. Never paste credentials into chat.
 
-An existing Origami account with API access is required. Draft generation uses the account's credits. Review current access and available credits in Origami before starting; the plugin does not purchase credits or change subscriptions.
+Campaign management requires `openid`, `user:org:read`, `origami:mcp`, `origami:plugin`, and `offline_access`. Existing draft-only connections must reconnect and explicitly grant the expanded permission. An old token remains draft-only even after another token grants expanded access.
 
-## Example
+## What can change
 
-“Use Origami to draft an email campaign for my appointment reminder product, targeting independent dental practices. Ask whether missed appointments are a problem. Save a draft with a short initial email and two follow-ups.”
+- Pause or resume an existing campaign.
+- Change a follow-up delay, with the previous delay returned for restoration.
+- Stop messaging or remove a lead from a campaign.
+- Regenerate a drafted reply or supply information it needs.
+- Start, inspect, answer, or stop supported background tasks.
+- Record supported business knowledge and read its history.
 
-Describe your real offer, audience and goal. Specify email, LinkedIn or both. Claude starts one draft job, follows its status, reads the saved campaign and returns a preview. If the job requests more information, answer its questions. If work is still running, ask Claude to check the same job rather than create another draft.
+Actions that require approval ask before running. Hosts must require a real user approval for confirmation tools. Background work consumes normal Origami credits. Read the returned results to distinguish a completed change, a refusal, a pending action, and a task still running.
 
-Review your draft at https://origami.chat/sequences/campaigns. Add recipients, configure senders and launch only in Origami. A missing sender does not prevent saving a draft.
+Campaign message-copy editing is not exposed by this release. Launch new drafts and send replies in Origami. Autopilot plays use the separate Origami Autopilot connector. Knowledge stored as documents is edited in the app. Older saved drafts remain readable and their jobs can be continued or cancelled.
+
+## Example requests
+
+- How did my outreach do last night, and what needs my attention?
+- Pause my dental practices campaign.
+- Change the first follow-up delay on my test campaign to four days.
+- Find a lead and show me the reply Origami drafted.
 
 ## Data and permissions
 
-The plugin sends your drafting brief and explicitly supplied job answers to Origami through its declared MCP connection. It can read the connected account, retrieve campaign drafts, create a draft, check its own connection's draft jobs, answer job questions and cancel such a job. The package contains no local executable hooks or bundled server code. Generated drafts and related job information are processed by the Origami service under its privacy policy.
+Your requests and explicitly supplied task answers are sent to Origami. The connection can read campaign, lead, reply, task and knowledge information within the consented organization and make supported changes. The package contains no executable hooks, credentials, or bundled server. Guidance comes from the authenticated server's tool descriptions and instructions.
 
-- [Privacy policy](https://origami.chat/privacy-policy)
-- [Terms of service](https://origami.chat/terms)
-- [Support](https://origami.chat/contact), in-app support chat, or hello@origamiagents.com
+[Privacy](https://origami.chat/privacy-policy) · [Terms](https://origami.chat/terms) · [Support](https://origami.chat/contact)
 
-## Troubleshooting
+## Release status
 
-If authorization fails, reconnect through OAuth using an eligible organization administrator. For access or credit errors, check the account in Origami. If a request times out, check the existing job or campaign list before retrying because a draft may already exist.
+Version 0.2.0 is a preparation candidate. Production revision verification, Clerk scope setup, renewed host consent, and live editing/approval tests must pass before submission. See `review/acceptance.md`.
 
 ## License
 
-Copyright 2026 AirSplash Inc. All rights reserved. See LICENSE. This package does not grant an open-source license.
+Copyright 2026 AirSplash Inc. All rights reserved. See LICENSE.

@@ -1,7 +1,7 @@
 {
   "name": "origami-campaign-drafts",
-  "version": "0.1.4",
-  "description": "Turn an outreach brief into a saved Origami campaign draft, then review and launch it in Origami.",
+  "version": "0.2.0",
+  "description": "Manage Origami campaigns, edit follow-up delays, review leads and drafted replies, and run background tasks from chat.",
   "author": {
     "name": "AirSplash Inc.",
     "email": "hello@origamiagents.com",
