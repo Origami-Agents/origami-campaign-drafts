@@ -1,0 +1,19 @@
+{
+  "name": "origami-campaign-drafts",
+  "version": "0.2.0",
+  "description": "Manage Origami outreach from chat: review results and campaigns, pause or resume campaigns, change follow-up timing, manage leads, redraft replies, and track background work.",
+  "author": {
+    "name": "AirSplash Inc.",
+    "email": "hello@origamiagents.com",
+    "url": "https://origami.chat"
+  },
+  "homepage": "https://origami.chat",
+  "keywords": [
+    "outreach",
+    "sales",
+    "campaigns",
+    "email",
+    "linkedin"
+  ],
+  "license": "LicenseRef-Proprietary"
+}

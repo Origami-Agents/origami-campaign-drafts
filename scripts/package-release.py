@@ -8,6 +8,7 @@ import zipfile
 
 parser = argparse.ArgumentParser()
 parser.add_argument('output', type=Path)
+parser.add_argument('--anthropic-source', type=Path, help='Write the same Claude runtime files to a directory for GitHub directory validation')
 args = parser.parse_args()
 root = Path(__file__).resolve().parents[1]
 args.output.mkdir(parents=True, exist_ok=True)
@@ -45,5 +46,11 @@ for host, label, manifest_path in [('openai', 'ChatGPT', '.codex-plugin/plugin.j
         assert bundle.testzip() is None
         assert len(bundle.namelist()) == 5
         assert 'NOT RUN' in bundle.read('README.md').decode()
+        if host == 'anthropic' and args.anthropic_source:
+            args.anthropic_source.mkdir(parents=True, exist_ok=True)
+            for name in bundle.namelist():
+                target = args.anthropic_source / name
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(bundle.read(name))
     print(archive.name, hashlib.sha256(archive.read_bytes()).hexdigest())
 print('Static package checks passed. Production host acceptance remains pending.')

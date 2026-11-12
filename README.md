@@ -51,4 +51,6 @@ Remaining release gates: verify the exact marketplace candidates and their expan
 
 Version 0.2.0 is prepared for review. Connected-host edit tests passed; candidate-specific acceptance and marketplace review remain incomplete. This package has not been submitted.
 
+For the Claude Directory, use the `packages/anthropic` source path. It contains only the Claude runtime package, keeping release tooling and other hosts' configuration outside the directory scan. Regenerate it together with the review archives using `python3 scripts/package-release.py /tmp/origami-review --anthropic-source packages/anthropic`.
+
 Copyright 2026 AirSplash Inc. All rights reserved.
