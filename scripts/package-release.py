@@ -1,41 +1,49 @@
-"""Build host-specific upload archives without credentials or stale skills."""
+"""Build the two review packages without credentials or legacy skills."""
 import argparse
+import copy
 import hashlib
 import json
 from pathlib import Path
 import zipfile
 
 parser = argparse.ArgumentParser()
-parser.add_argument("output", type=Path)
+parser.add_argument('output', type=Path)
 args = parser.parse_args()
 root = Path(__file__).resolve().parents[1]
 args.output.mkdir(parents=True, exist_ok=True)
-config = json.loads((root / ".mcp.json").read_text())
-config["mcpServers"]["origami"].pop("type", None)
-openai = json.loads((root / ".codex-plugin/plugin.json").read_text())
-claude = json.loads((root / ".claude-plugin/plugin.json").read_text())
-assert openai["name"] == claude["name"] == "origami-campaign-drafts"
-assert openai["version"] == claude["version"] == "0.2.0"
-assert config["mcpServers"]["origami"]["url"] == "https://origami.chat/mcp"
-assert "origami:plugin" in config["mcpServers"]["origami"]["extensions"]["com.openai"]["auth"]["baseScopes"]
-cases = openai["extensions"]["com.openai"]["review"]["test_cases"]
-tools = set(json.loads((root / "review/anthropic-listing.json").read_text())["tools"])
-assert len(cases["positive"]) == 5
+config = json.loads((root / '.mcp.json').read_text())
+server = config['mcpServers']['origami']
+scopes = server['extensions']['com.openai']['auth']['baseScopes']
+assert server['oauth']['scopes'].split() == scopes
+assert 'origami:plugin' in scopes
+assert server['url'] == 'https://origami.chat/mcp'
+tools = set(json.loads((root / 'review/anthropic-listing.json').read_text())['tools'])
 assert len(tools) == 27
-for case in cases["positive"]:
-    assert all(tool.strip() in tools for tool in case["tools_triggered"].split(","))
 
-for host, manifest in [("openai", ".codex-plugin/plugin.json"), ("anthropic", ".claude-plugin/plugin.json")]:
-    archive = args.output / f"{host}-origami-0.2.0-candidate.zip"
-    # Claude's HTTP transport config does not consume OpenAI extension fields.
-    mcp = config if host == "openai" else {"mcpServers": {"origami": {"type": "http", "url": "https://origami.chat/mcp"}}}
-    with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as bundle:
-        for name in [manifest, "assets/icon.png", "LICENSE", "README.md", "review/acceptance.md"]:
+for host, label, manifest_path in [('openai', 'ChatGPT', '.codex-plugin/plugin.json'), ('anthropic', 'Claude', '.claude-plugin/plugin.json')]:
+    manifest = json.loads((root / manifest_path).read_text())
+    assert manifest['name'] == 'origami-campaign-drafts'
+    assert manifest['version'] == '0.2.0'
+    mcp = copy.deepcopy(config)
+    if host == 'openai':
+        mcp['mcpServers']['origami'].pop('type')
+        mcp['mcpServers']['origami'].pop('oauth')
+        cases = manifest['extensions']['com.openai']['review']['test_cases']
+        assert cases['positive'] and cases['negative']
+        for case in cases['positive']:
+            assert all(tool.strip() in tools for tool in case['tools_triggered'].split(','))
+    else:
+        mcp = {'mcpServers': {'origami': {'type': 'http', 'url': server['url'], 'oauth': server['oauth']}}}
+    archive = args.output / f'origami-{host}-0.2.0-review.zip'
+    readme = (root / 'README.md').read_text().replace('# Origami outreach\n', f'# Origami outreach for {label}\n', 1)
+    with zipfile.ZipFile(archive, 'w', zipfile.ZIP_DEFLATED) as bundle:
+        for name in [manifest_path, 'assets/icon.png', 'LICENSE']:
             bundle.write(root / name, name)
-        bundle.writestr(".mcp.json", json.dumps(mcp, indent=2) + "\n")
+        bundle.writestr('README.md', readme)
+        bundle.writestr('.mcp.json', json.dumps(mcp, indent=2) + '\n')
     with zipfile.ZipFile(archive) as bundle:
         assert bundle.testzip() is None
-        assert manifest in bundle.namelist()
-        assert not any("SKILL.md" in name for name in bundle.namelist())
+        assert len(bundle.namelist()) == 5
+        assert 'NOT RUN' in bundle.read('README.md').decode()
     print(archive.name, hashlib.sha256(archive.read_bytes()).hexdigest())
-print("Static package checks passed. Live host acceptance remains required.")
+print('Static package checks passed. Production host acceptance remains pending.')

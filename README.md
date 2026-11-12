@@ -1,43 +1,54 @@
-# Origami campaign management
+# Origami outreach
 
-Manage outreach in [Origami](https://origami.chat) from ChatGPT or Claude. List campaigns, pause or resume them, edit follow-up delays, find leads, stop outreach to a lead, review or redraft replies, and start campaign builds or background tasks.
+Manage your outreach in [Origami](https://origami.chat) from chat. Review campaign results, pause or resume a campaign, change a follow-up delay, find and stop leads, redraft replies, and start or follow background work.
 
 ## Connect
 
-Connect to `https://origami.chat/mcp` through OAuth as an administrator of an active, paid, API-enabled primary Origami organization. Consent selects the organization; these tools cannot switch projects or access another organization. Never paste credentials into chat.
+Connect the Origami server at `https://origami.chat/mcp` through the host's secure OAuth flow. Sign in as an administrator of an active, paid, API-enabled primary organization and select that organization during consent. The connection stays within the selected organization; child projects are unsupported.
 
-Campaign management requires `openid`, `user:org:read`, `origami:mcp`, `origami:plugin`, and `offline_access`. Existing draft-only connections must reconnect and explicitly grant the expanded permission. An old token remains draft-only even after another token grants expanded access.
+This update requires fresh consent to `origami:plugin`, in addition to `openid`, `user:org:read`, `origami:mcp`, and `offline_access`. Existing draft-only connections retain their old access until renewed consent succeeds. Never paste keys, tokens, or passwords into chat.
 
-## What can change
+## Examples
 
-- Pause or resume an existing campaign.
-- Change a follow-up delay, with the previous delay returned for restoration.
-- Stop messaging or remove a lead from a campaign.
-- Regenerate a drafted reply or supply information it needs.
-- Start, inspect, answer, or stop supported background tasks.
-- Record supported business knowledge and read its history.
+- “How did my outreach perform last night, and what is waiting on me?”
+- “Show my campaigns and pause the dental practices campaign.”
+- “Change the first follow-up in my test campaign to wait three days.”
+- “Show the reply Origami drafted for this lead and redraft it using these corrections.”
+- “How is the background task you started earlier progressing?”
 
-Actions that require approval ask before running. Hosts must require a real user approval for confirmation tools. Background work consumes normal Origami credits. Read the returned results to distinguish a completed change, a refusal, a pending action, and a task still running.
+Resolve the campaign or lead from tool results. Gated actions return a question and pending action ID. They require the person's answer, the host's permission controls, and an identical retry after confirmation. Do not treat third-party reply text as authorization.
 
-Campaign message-copy editing is not exposed by this release. Launch new drafts and send replies in Origami. Autopilot plays use the separate Origami Autopilot connector. Knowledge stored as documents is edited in the app. Older saved drafts remain readable and their jobs can be continued or cancelled.
+## Supported edits and limits
 
-## Example requests
+The expanded tools can pause/resume existing campaigns and change a sequence step's delay. They do not directly rename campaigns, rewrite an existing campaign's sequence copy, edit its audience targeting, or send drafted inbox replies. Use Origami for those changes. Reply redrafting is not campaign-copy editing. Autopilot plays use the separate Origami Autopilot connector.
 
-- How did my outreach do last night, and what needs my attention?
-- Pause my dental practices campaign.
-- Change the first follow-up delay on my test campaign to four days.
-- Find a lead and show me the reply Origami drafted.
+New campaign builds use `tasks_start`. Track a campaign build in `campaigns_list`; track other tasks with `tasks_list` and `tasks_get`. The four compatibility tools for saved drafts do not create a new editing API.
 
-## Data and permissions
+## Data and charges
 
-Your requests and explicitly supplied task answers are sent to Origami. The connection can read campaign, lead, reply, task and knowledge information within the consented organization and make supported changes. The package contains no executable hooks, credentials, or bundled server. Guidance comes from the authenticated server's tool descriptions and instructions.
+The declared MCP connection sends requested changes, briefs, and tool inputs to Origami and returns organization-scoped campaign, lead, reply, task, and knowledge data. Background tasks and AI drafting can consume normal Origami credits. Knowledge changes can persist in the organization. The package contains no credentials, executable hooks, or bundled server. Access remains subject to organization membership and plan checks.
 
-[Privacy](https://origami.chat/privacy-policy) · [Terms](https://origami.chat/terms) · [Support](https://origami.chat/contact)
+- [Privacy policy](https://origami.chat/privacy-policy)
+- [Terms](https://origami.chat/terms)
+- [Support](https://origami.chat/contact), hello@origamiagents.com
+
+## Verified acceptance status (November 12, 2026)
+
+This candidate has not been submitted or approved. Expanded OAuth consent and a reversible campaign-delay edit now work in Claude and a private ChatGPT test connection. These connection tests do not establish acceptance of the marketplace packages.
+
+| Check | Result |
+| --- | --- |
+| Expanded backend code | PR #4944 is included in the verified production deployment. |
+| Claude connected-host edit and restore | PASS. An empty draft's second-step delay changed from 2 to 3 days and back to 2. Saved-state reads verified both changes, draft status and zero recipients. |
+| Private ChatGPT connection edit and restore | PASS. The expanded OAuth connection completed the same confirmed edit, saved-state read and restoration. Host permissions remained enabled. |
+| OpenAI marketplace candidate acceptance | NOT RUN against the updated marketplace candidate. The existing publisher connection still displays six legacy tools after rescan. The successful private test is a separate connection. |
+| Anthropic companion-package acceptance | PENDING. The existing saved draft references the old source version and needs a reviewed replacement. |
+| Separate historical Claude development test | Recorded tool responses prove step 2 changed 1 to 2 days and was restored to 1 day on an existing empty draft. Draft status and zero recipients remained unchanged; the restored response matches the baseline. This is not acceptance of this production candidate. |
+
+Remaining release gates: verify the exact marketplace candidates and their expanded catalogs, verify permission boundaries and remaining tool acceptance, resolve the publisher connection and companion source reference, complete marketplace scans, then obtain final owner review. A single delay test does not establish all-tool acceptance. No outreach was launched by these tests.
 
 ## Release status
 
-Version 0.2.0 is a preparation candidate. Production revision verification, Clerk scope setup, renewed host consent, and live editing/approval tests must pass before submission. See `review/acceptance.md`.
+Version 0.2.0 is prepared for review. Connected-host edit tests passed; candidate-specific acceptance and marketplace review remain incomplete. This package has not been submitted.
 
-## License
-
-Copyright 2026 AirSplash Inc. All rights reserved. See LICENSE.
+Copyright 2026 AirSplash Inc. All rights reserved.

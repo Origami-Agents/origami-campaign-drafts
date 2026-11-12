@@ -1,6 +1,6 @@
 # Release acceptance
 
-Status: NOT READY TO SUBMIT. No live host edit test is claimed.
+Status: NOT READY TO SUBMIT. Live connected-host edit and restoration tests passed in Claude and a private ChatGPT connection. Exact marketplace candidate acceptance remains incomplete.
 
 ## Required checks, separately in ChatGPT and Claude
 
@@ -19,5 +19,15 @@ PR #4944 exposes `sequences_set_step_delay`, campaign pause/resume and related m
 
 ## Expected release artifacts
 
-- OpenAI ZIP: hidden `.codex-plugin/plugin.json`, `.mcp.json`, icon. Same package identity `origami-campaign-drafts`, MCP key `origami`, resource `/mcp`, version 0.2.0, expanded scope, five positive review cases. No old draft-only skill.
+- OpenAI ZIP: hidden `.codex-plugin/plugin.json`, `.mcp.json`, icon. Same package identity `origami-campaign-drafts`, MCP key `origami`, resource `/mcp`, version 0.2.0, expanded scope, three positive review cases. No old draft-only skill.
 - Claude ZIP: hidden `.claude-plugin/plugin.json`, HTTP `.mcp.json`, README, license and icon. No old draft-only skill. Directory field values are in `anthropic-listing.json`; a directory listing is not replaced by uploading a Claude Code ZIP alone.
+
+## Verified results, November 12, 2026
+
+Production contains #4944. Expanded consent now works. Claude and a private ChatGPT test connection each changed an empty draft's second-step delay from 2 to 3 days, verified the saved result, restored 2 days, and verified restoration. Final delays were 0/2/3, with draft status and zero recipients. No outreach or background jobs were started. This proves the tested connected-host workflow, not every tool or marketplace candidate.
+
+The OpenAI 0.2.0 candidate remains Draft / Not submitted. Its existing publisher connection still displays six legacy tools after rescan, despite expanded scopes in the package configuration. The private ChatGPT test does not update that candidate. Candidate discovery, broader tool coverage, tenant boundaries, decline, refresh and revocation checks remain release gates. Host one-time permissions were retained; no persistent auto-approval was enabled.
+
+A historical Claude development test also has recorded 1/2/1-day readbacks. That earlier test remains separate from the current connected-host evidence. Test account identifiers and transcripts belong in the internal review kit, not this public source.
+
+Both runtime READMEs include the same explicit acceptance status. Claude HTTP OAuth scopes are pinned as well as OpenAI's scope request. The saved Anthropic companion draft is immutable and pinned to v0.1.4; a reviewed replacement must use updated source. Do not move the existing v0.1.4 tag or submit from this preparation branch.

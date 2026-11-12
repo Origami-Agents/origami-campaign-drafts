@@ -1,7 +1,6 @@
 {
   "mcpServers": {
     "origami": {
-      "type": "http",
       "url": "https://origami.chat/mcp",
       "extensions": {
         "com.openai": {
@@ -20,6 +19,10 @@
             ]
           }
         }
+      },
+      "type": "http",
+      "oauth": {
+        "scopes": "openid user:org:read origami:mcp origami:plugin offline_access"
       }
     }
   }

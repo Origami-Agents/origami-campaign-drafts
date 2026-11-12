@@ -2,7 +2,7 @@
   "name": "Origami",
   "slug": "origami-campaign-drafts",
   "oneLiner": "Manage campaigns, edit follow-up delays, and run outreach tasks in Origami.",
-  "description": "Origami runs your outbound. Ask how last night went and what is waiting on you, pause or resume a campaign, change a follow-up's timing, find a lead and stop messaging them, read or redraft the reply Origami wrote to a lead, and start a build of a new campaign or a background task for longer work, then check on that task later. Anything that needs your OK asks first, and replies are sent from Origami's Inbox. Autopilot's plays live on the separate Origami Autopilot app. Requires an administrator of an Origami primary organization on a paid plan with API access, connected by signing in. Existing campaign edits currently cover follow-up delays; changing campaign message copy is not supported by these tools.",
+  "description": "Manage sales outreach in Origami: review campaign results, pause or resume campaigns, change follow-up timing, manage leads, redraft inbox replies, and track background work. Direct campaign edits cover pause/resume and follow-up delays. Edit campaign copy and targeting, and send inbox replies, in Origami. Gated actions require confirmation. Requires an administrator of an Origami primary organization with API access and renewed OAuth consent. Background tasks use your Origami account's credits.",
   "serverUrl": "https://origami.chat/mcp",
   "authentication": "OAuth",
   "requestedScopes": [
@@ -45,5 +45,5 @@
   "documentation": "https://github.com/Origami-Agents/origami-campaign-drafts#readme",
   "privacyPolicy": "https://origami.chat/privacy-policy",
   "support": "https://origami.chat/contact",
-  "status": "Prepared, not submitted; live gates pending"
+  "status": "Prepared for review; connected-host edit and restoration passed; companion-package acceptance pending; not submitted"
 }
